@@ -17,3 +17,8 @@ export const getMyOrganizations = async (req, res) => {
 
   res.json(orgs);
 };
+
+export const deleteOrganization = async (req, res) => {
+  await req.org.deleteOne();
+  res.json({ message: "Organization deleted" });
+};
