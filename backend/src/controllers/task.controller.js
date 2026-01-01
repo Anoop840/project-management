@@ -1,5 +1,5 @@
 import Task from "../models/Task.js";
-
+import { getPagination } from "../utils/pagination.js";
 export const createTask = async (req, res) => {
   const { title, description, priority, assignedTo, dueDate, projectId } =
     req.body;
@@ -17,13 +17,31 @@ export const createTask = async (req, res) => {
 };
 
 export const getTasksByProject = async (req, res) => {
-  const { projectId } = req.query;
+  const { projectId, status, priority } = req.query;
+  const { page, limit, skip } = getPagination(req.query);
 
-  const tasks = await Task.find({ project: projectId })
-    .populate("assignedTo", "name email")
-    .sort({ createdAt: -1 });
+  const filter = { project: projectId };
 
-  res.json(tasks);
+  if (status) filter.status = status;
+  if (priority) filter.priority = priority;
+
+  const [tasks, total] = await Promise.all([
+    Task.find(filter)
+      .populate("assignedTo", "name email")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit),
+    Task.countDocuments(filter),
+  ]);
+
+  res.json({
+    data: tasks,
+    meta: {
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+    },
+  });
 };
 
 export const updateTaskStatus = async (req, res) => {
