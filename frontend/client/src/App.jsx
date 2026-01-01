@@ -4,6 +4,8 @@ import Dashboard from "./pages/Dashboard";
 import Board from "./pages/Board";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import Register from "./pages/Register";
+import Projects from "./pages/Projects";
 
 function App() {
   return (
@@ -24,6 +26,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Board />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/projects"
+            element={
+              <ProtectedRoute>
+                <Projects />
               </ProtectedRoute>
             }
           />

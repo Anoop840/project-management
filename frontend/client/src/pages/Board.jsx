@@ -8,7 +8,9 @@ const Board = () => {
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
-        api.get(`/tasks?projectId=${projectId}`).then((res) => setTasks(res.data));
+        api.get(
+            `/tasks?projectId=${projectId}&page=1&limit=20`
+        ).then((res) => setTasks(res.data.data));
     }, [projectId]);
 
     const updateStatus = async (taskId, status) => {

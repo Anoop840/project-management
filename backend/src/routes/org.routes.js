@@ -3,6 +3,7 @@ import { protect } from "../middlewares/auth.middleware.js";
 import {
   createOrganization,
   getMyOrganizations,
+  deleteOrganization,
 } from "../controllers/org.controller.js";
 import { authorizeOrgRoles } from "../middlewares/role.middleware.js";
 
